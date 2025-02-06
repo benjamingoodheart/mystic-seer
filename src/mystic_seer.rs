@@ -1,26 +1,40 @@
 use std::io;
 
-struct MysticSeer{
-    answers: Vec<String>,
+struct MysticSeer<'a> {
+    answers: Vec<&'a str>,
 }
 
-impl MysticSeer{
-    pub fn prompt() -> String{
-        let prompt_str = "Put in a penny?";
-        prompt_str.to_string()
-    }
-}
-
-
-#[cfg(test)]
-    mod tests{
-        use super::MysticSeer;
-        #[test]
-        fn basics(){
-
-            assert_eq!(MysticSeer::prompt(),"Put in a penny?");
+impl<'a> MysticSeer<'a> {
+    fn new() -> MysticSeer<'a> {
+        MysticSeer {
+            answers: vec!["Why Not?"],
         }
     }
+    pub fn prompt(&self) -> String {
+        let prompt_str = "Put in a penny? Y/N";
+        prompt_str.to_string()
+    }
+
+    pub fn read_input(&self) -> String {
+        let mut input_str = String::new();
+        //while input_str.trim() != "N" {
+            //DO SOMETHING
+        //}
+        let msg = "See Ya Real Soon";
+        msg.to_string()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::MysticSeer;
+    #[test]
+    fn basics() {
+        let seer = MysticSeer::new();
+        assert_eq!(seer.prompt(), "Put in a penny? Y/N");
+        assert_eq!(seer.answers[0], "Why Not?");
+    }
+}
 /*
  let ans:&[&str] = &["What Do You Think?", "Try Again"];
     println!("Insert 10 cents? Y/N");
