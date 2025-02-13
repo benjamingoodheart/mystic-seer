@@ -1,28 +1,41 @@
-use std::io;
+use rustyline::error::ReadlineError;
+use rustyline::{DefaultEditor, Result};
 
-struct MysticSeer<'a> {
+pub struct MysticSeer<'a> {
     answers: Vec<&'a str>,
 }
 
 impl<'a> MysticSeer<'a> {
-    fn new() -> MysticSeer<'a> {
+    pub fn new() -> MysticSeer<'a> {
         MysticSeer {
             answers: vec!["Why Not?"],
         }
     }
-    pub fn prompt(&self) -> String {
-        let prompt_str = "Put in a penny? Y/N";
-        prompt_str.to_string()
+    pub fn prompt(&self) -> Result<String> {
+        let mut rl = rustyline::DefaultEditor::new()?;
+        let readline = rl.readline("Put in a penny? Y/N \n >> ")?;
+       if readline.trim() == "Y" {
+        println!("You selected yes.");
+            println!("{}", self.ask_seer().unwrap());
+       }
+       if readline.trim() == "N"{
+        println!("You selected no. Just in the nick of time.");
+       }
+       if readline.trim() != "N" && readline.trim() != "Y" {
+        println!("What the hell are you trying to pull here?");
+        self.prompt();
+       }
+       Ok(readline)
     }
 
-    pub fn read_input(&self) -> String {
-        let mut input_str = String::new();
-        //while input_str.trim() != "N" {
-            //DO SOMETHING
-        //}
-        let msg = "See Ya Real Soon";
-        msg.to_string()
+    pub fn ask_seer(&self) -> Result<String>{
+        let mut rl = rustyline::DefaultEditor::new()?;
+        let readline = rl.readline("Ask the mystic seer a yes or no question.");
+        //TODO: Validate answer
+        //TODO: randomly return an answer from the seer
+        Ok(readline?)
     }
+    
 }
 
 #[cfg(test)]
@@ -35,6 +48,7 @@ mod tests {
         assert_eq!(seer.answers[0], "Why Not?");
     }
 }
+
 /*
  let ans:&[&str] = &["What Do You Think?", "Try Again"];
     println!("Insert 10 cents? Y/N");

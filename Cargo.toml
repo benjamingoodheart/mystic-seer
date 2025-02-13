@@ -3,4 +3,14 @@ name = "mystic-seer"
 version = "0.1.0"
 edition = "2021"
 
+
+[lib]
+name = "mystic_seer"
+path = "src/lib.rs"
+
+[[bin]]
+name="mystic_seer"
+path="src/bin/main.rs"
+
 [dependencies]
+rustyline = "15.0.0"
