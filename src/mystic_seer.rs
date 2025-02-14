@@ -1,6 +1,7 @@
 use rustyline::error::ReadlineError;
 use rustyline::{ DefaultEditor, Result };
 use rand::random_range;
+
 pub struct MysticSeer<'a> {
     answers: Vec<&'a str>,
 }
@@ -30,7 +31,7 @@ impl<'a> MysticSeer<'a> {
     pub fn prompt(&self) -> Result<String> {
         let mut rl = rustyline::DefaultEditor::new()?;
         let readline = rl.readline("Put in a penny? Y/N \n >> ")?;
-        if readline.trim() == "Y" {
+        if readline.trim().to_uppercase() == "Y" {
             println!("You selected yes.");
             println!("{}", self.ask_seer().unwrap());
             println!("{}", self.get_random_answer());
@@ -50,6 +51,10 @@ impl<'a> MysticSeer<'a> {
         let mut rl = rustyline::DefaultEditor::new()?;
         let readline = rl.readline("Ask the mystic seer a yes or no question. \n >>");
         //TODO: Validate answer
+        if self.validate_yes_no_question(&readline.as_ref().unwrap()) != true{
+            println!("I don't think that's a yes or no question. Try again.");
+            self.ask_seer();
+        };
         Ok(readline?)
     }
 
@@ -60,6 +65,22 @@ impl<'a> MysticSeer<'a> {
     pub fn get_random_answer(&self) -> String {
         let ind = random_range(0..self.answers.len());
         self.answers[ind].to_string()
+    }
+
+    fn validate_yes_no_question(&self, question: &str) -> bool{
+
+        if question.contains("?"){
+            match question{
+                _ if question.contains("Am")=> {
+                    println!("Valid");
+                    true
+                },
+                &_ => todo!(),
+            }
+        } else{
+            println!("Invalid");
+            false
+        }
     }
 }
 
