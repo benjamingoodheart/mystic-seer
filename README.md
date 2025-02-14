@@ -18,13 +18,13 @@ cd mystic-seer
 
 ## Run the Program
 
-In the `mystic-seer` root directory run the following command. 
+In the `mystic-seer` root directory run the following command:
 
 ```
 cargo run --quiet
 ```
 
-You will see the following prompt. 
+You will see the following prompt:
 
 ```
 >> Welcome to the Busy Bee Cafe. The mystic seer beckons...
