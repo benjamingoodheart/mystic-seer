@@ -21,7 +21,7 @@ Type "Y"
 Enter 1
 Sleep 2
 
-Type "Am I A Good person?"
+Type "Am I a good person?"
 Enter 1
 Sleep 2
 

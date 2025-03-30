@@ -1,6 +1,7 @@
 use rustyline::{ DefaultEditor, Result };
 use rand::random_range;
 use std::process;
+use colored::{Colorize};
 
 pub struct MysticSeer<'a> {
     pub answers: Vec<&'a str>,
@@ -29,26 +30,26 @@ impl<'a> MysticSeer<'a> {
         }
     }
     pub fn welcome(&self) -> () {
-        println!("Welcome to the Busy Bee Cafe. The mystic seer beckons...");
+        println!("{}","Welcome to the Busy Bee Cafe. The mystic seer beckons...".purple().italic());
     }
 
     pub fn prompt(&self) -> Result<String> {
         let mut rl = DefaultEditor::new()?;
         let readline = rl.readline("Put in a penny? Y/N \n >> ")?;
         if readline.trim().to_uppercase() == "Y" {
-            println!("You selected yes.");
+            println!("{}", "You selected yes.".purple().italic());
 
             let _ = self.ask_seer();
 
-            println!("{}", self.get_random_answer());
+            println!("{}", self.get_random_answer().magenta().bold());
 
             let _ = self.prompt();
         }
         if readline.trim().to_uppercase() == "N" {
-            println!("You selected no. Just in the nick of time.");
+            println!("{}","You selected no. Just in the nick of time.".green().italic());
         }
         if readline.trim().to_uppercase() != "N" && readline.trim().to_uppercase() != "Y" {
-            println!("That's not an acceptible answer.");
+            println!("{}", "That's not an acceptible answer.".red());
             let _ = self.prompt();
         }
         Ok(readline)
@@ -58,12 +59,12 @@ impl<'a> MysticSeer<'a> {
         let mut rl = rustyline::DefaultEditor::new()?;
         let readline = rl.readline("Ask the mystic seer a yes or no question. \n >> ");
         if &readline.as_ref().unwrap().to_uppercase() == "N" {
-            println!("Come back again real soon!");
+            println!("{}","Come back again real soon!".green().italic());
             process::exit(0);
         }
         if self.validate_yes_no_question(&readline.as_ref().unwrap()) != true {
-            println!(
-                "Hm, I don't know if that's a yes/no question. Try starting it with the words 
+            println!("{} {} {}" ,
+                "Hm, I don't know if that's a yes/no question. Try starting it with the words".magenta(), " 
             -> Am
             -> Could
             -> Can 
@@ -71,13 +72,15 @@ impl<'a> MysticSeer<'a> {
             -> Does
             -> Do
             -> Is
-            -> May
-            and ensure the question ends with '?'
-            Use 'N' to exit."
+            -> May".dimmed(),
+            "
+            \n and ensure the question ends with '?' 
+            Use 'N' to exit.".purple()
             );
             let _ = self.ask_seer();
         }
         Ok(readline?)
+
     }
 
     pub fn get_answer_length(&self) -> usize {
