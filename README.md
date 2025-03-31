@@ -5,6 +5,8 @@ Inspired by the incredible episode of *The Twilight Zone* entitled ["The Nick Of
 
 I reimagined the seer as a Command Line Interface program. The concept is simple: ask the seer a yes or no question, and it will provide you with an answer. 
 
+![Mystic Seer Demo](.demos/mystic_seer.gif)
+
 ## Installation
 
 If you do not already have rust and cargo installed on your machine, first follow the directions as detailed [here](https://doc.rust-lang.org/cargo/getting-started/installation.html).
