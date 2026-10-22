@@ -29,15 +29,13 @@ impl<'a> MysticSeer<'a> {
             ],
         }
     }
-    pub fn welcome(&self) -> () {
-        println!(
-            "{}",
-            "Welcome to the Busy Bee Cafe. The mystic seer beckons...".purple().italic()
-        );
-    }
 
     pub fn prompt(&self) -> Result<String> {
+        let welcome_msg: String = "Welcome to the Busy Bee Cafe. The mystic seer beckons...".to_string();
+        println!("{}", welcome_msg.purple().italic());
+        
         let mut rl = DefaultEditor::new()?;
+
         let readline = rl.readline("Put in a penny? Y/N \n >> ")?;
         if readline.trim().to_uppercase() == "Y" {
             println!("{}", "You selected yes.".purple().italic());
