@@ -2,6 +2,7 @@ use rustyline::{ DefaultEditor, Result };
 use rand::random_range;
 use std::process;
 use colored::{ Colorize };
+use inquire::{Text, Confirm};
 
 pub struct MysticSeer<'a> {
     pub answers: Vec<&'a str>,
@@ -34,6 +35,8 @@ impl<'a> MysticSeer<'a> {
         let welcome_msg: String = "Welcome to the Busy Bee Cafe. The mystic seer beckons...".to_string();
         println!("{}", welcome_msg.purple().italic());
         
+        
+
         let mut rl = DefaultEditor::new()?;
 
         let readline = rl.readline("Put in a penny? Y/N \n >> ")?;
@@ -114,6 +117,20 @@ impl<'a> MysticSeer<'a> {
         } else {
             false
         }
+    }
+
+    pub fn prompt2(&self)-> Result<()>{
+       let first_prompt =  Confirm::new("Would you like to put a penny into the Mystic Seer?").prompt();
+
+       match first_prompt{
+        Ok(true) => { 
+            Ok(())
+        },
+        Ok(false)=>{
+            Ok(println!("{}", "You selected no...just in the nick of time.".green().italic()))
+        },
+        Err(_) => Ok(println!("Something's wrong")),
+       }
     }
 }
 
