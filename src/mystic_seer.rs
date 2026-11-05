@@ -2,7 +2,7 @@ use rustyline::{ DefaultEditor, Result };
 use rand::random_range;
 use std::process;
 use colored::{ Colorize };
-use inquire::{Text, Confirm};
+use inquire::{Text, Confirm, validator::{StringValidator, Validation}};
 
 pub struct MysticSeer<'a> {
     pub answers: Vec<&'a str>,
@@ -34,8 +34,7 @@ impl<'a> MysticSeer<'a> {
     pub fn prompt(&self) -> Result<String> {
         let welcome_msg: String = "Welcome to the Busy Bee Cafe. The mystic seer beckons...".to_string();
         println!("{}", welcome_msg.purple().italic());
-        
-        
+
 
         let mut rl = DefaultEditor::new()?;
 
@@ -88,6 +87,37 @@ impl<'a> MysticSeer<'a> {
         Ok(readline?)
     }
 
+    pub fn ask_seer2(&self) -> Result<()>{
+        let validator = |input: &str| if self.validate_yes_no_question(input.as_ref()) != true{
+            Ok(Validation::Invalid("Please only ask a yes or no question...Try starting it with
+            -> Am
+            -> Could
+            -> Can 
+            -> Will
+            -> Does
+            -> Do
+            -> Is
+            -> May".dimmed().into()))
+        }else{
+            Ok(Validation::Valid)
+        };
+
+        let question = Text::new("Ask the seer a yes or no question....")
+        .with_validator(validator)
+        .prompt();
+
+        match question{
+            Ok(question)=> {
+                let ans = self.get_random_answer();
+                Ok(println!("{}", ans))
+            },
+
+            Err(err)=> Ok(println!("Error while asking the seer: {}" , err))
+        }
+
+
+    }
+
     pub fn get_answer_length(&self) -> usize {
         self.answers.len()
     }
@@ -124,6 +154,7 @@ impl<'a> MysticSeer<'a> {
 
        match first_prompt{
         Ok(true) => { 
+            let _ = self.ask_seer2();
             Ok(())
         },
         Ok(false)=>{
